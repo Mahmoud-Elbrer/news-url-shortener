@@ -11,18 +11,18 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Entity
 @Table(name = "shorted_urls")
-public class GenerateShortUrl {
+public class UrlMapping {
 
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "short_url", nullable = false, unique = true)
-    private String shortUrl;
-
-    @Column(name = "long_url", nullable = false)
+    @Column( nullable = false , unique = true , length = 2048)
     private String longUrl;
+
+    @Column(nullable = false, unique = true )
+    private String shortCode;
 
     @Column(name = "click_count")
     private int clickCount = 0;
