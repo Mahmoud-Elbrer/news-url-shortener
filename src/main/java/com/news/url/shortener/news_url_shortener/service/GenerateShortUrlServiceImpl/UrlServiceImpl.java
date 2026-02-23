@@ -17,28 +17,26 @@ public class UrlServiceImpl implements UrlService {
 
     private final CacheService cacheService;
 
-    public UrlServiceImpl(UrlRepository repository, CacheService cacheService) {
+    private ShortCodeGenerator shortCodeGenerator ;
+
+    public UrlServiceImpl(UrlRepository repository, CacheService cacheService, ShortCodeGenerator shortCodeGenerator) {
         this.repository = repository;
         this.cacheService = cacheService;
+        this.shortCodeGenerator = shortCodeGenerator;
     }
 
     @Override
     public UrlMapping createShortUrl(String longUrl) {
 
-
         // Check if URL already exists
         Optional<UrlMapping> existing = repository.findByLongUrl(longUrl);
         if (existing.isPresent()) return existing.get();
 
-        String shortCode = ShortCodeGenerator.generate(8);
-
-        System.out.println(shortCode);
+        String shortCode = shortCodeGenerator.generateShortCode();
 
         UrlMapping mapping = new UrlMapping();
         mapping.setShortCode(shortCode);
         mapping.setLongUrl(longUrl);
-
-        System.out.println(longUrl);
 
         // save to redis
         cacheService.save(mapping);
@@ -55,7 +53,7 @@ public class UrlServiceImpl implements UrlService {
 
         if (longUrl != null) {
             // increment Click to cache
-           // cacheService.incrementClick(code);
+            cacheService.incrementClick(code);
             return longUrl;
         }
 
@@ -67,7 +65,6 @@ public class UrlServiceImpl implements UrlService {
 
         // get increment and increment and update it
         mapping.setClickCount(mapping.getClickCount() + 1);
-        System.out.println(mapping.getClickCount() + 1);
         repository.save(mapping);
 
         return mapping.getLongUrl();

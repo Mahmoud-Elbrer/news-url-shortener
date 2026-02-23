@@ -36,14 +36,6 @@ public class CacheService {
         redisTemplate.expire(key, 7, TimeUnit.DAYS);
     }
 
-//    public UrlMapping getByShortCode(String shortCode) throws Exception {
-//        String key = buildKey(shortCode);
-//
-//        Object value = redisTemplate.opsForValue().get(key);
-//        if (value == null) return null;
-//
-//        return objectMapper.readValue(value.toString(), UrlMapping.class);
-//    }
 
     public String getLongUrl(String shortCode) {
 
@@ -60,5 +52,15 @@ public class CacheService {
 
         redisTemplate.opsForHash().increment(key, "clickCount", 1);
     }
+
+
+    //    public UrlMapping getByShortCode(String shortCode) throws Exception {
+//        String key = buildKey(shortCode);
+//
+//        Object value = redisTemplate.opsForValue().get(key);
+//        if (value == null) return null;
+//
+//        return objectMapper.readValue(value.toString(), UrlMapping.class);
+//    }
 
 }

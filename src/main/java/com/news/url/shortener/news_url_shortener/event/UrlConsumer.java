@@ -15,7 +15,7 @@ public class UrlConsumer {
     @KafkaListener(topics = "${spring.kafka.topic.name}", groupId = "${spring.kafka.consumer.group-id}")
     // this News Entity is same as the one in news_fetcher_service
     public void consume(UrlRequestDto urlRequestDto) {
-        LOGGER.info("Message received in News Persistence Service :  -> " , urlRequestDto);
+        LOGGER.info("Message received in News Persistence Service :  -> " , urlRequestDto.toString());
 
     }
 
